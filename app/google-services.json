@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "846267411581",
+    "project_id": "loginscreen-8c6e5",
+    "storage_bucket": "loginscreen-8c6e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846267411581:android:a565adf9017c2f037ad514",
+        "android_client_info": {
+          "package_name": "com.berkay.loginscreens"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxLo5WcfSL_rEs_x890i0Zy4dUNOuhhJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
