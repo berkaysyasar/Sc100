@@ -118,9 +118,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun signinwithgoogleButton(view: View){
 
-        }
 
     }
 

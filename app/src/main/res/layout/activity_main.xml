@@ -64,7 +64,7 @@
         app:srcCompat="@drawable/sc2" />
 
     <Button
-        android:id="@+id/sendButton"
+        android:id="@+id/continueButton"
         android:layout_width="342dp"
         android:layout_height="43dp"
         android:layout_marginStart="32dp"
@@ -109,7 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendButton" />
+        app:layout_constraintTop_toBottomOf="@+id/continueButton" />
 
     <ImageView
         android:layout_width="24dp"
@@ -117,7 +117,7 @@
         android:layout_marginStart="112dp"
         android:layout_marginTop="44dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendButton"
+        app:layout_constraintTop_toBottomOf="@+id/continueButton"
         app:srcCompat="@drawable/googleg_standard_color_18" />
 
     <TextView
@@ -129,7 +129,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.525"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendButton" />
+        app:layout_constraintTop_toBottomOf="@+id/continueButton" />
 
     <TextView
         android:id="@+id/textView5"
@@ -143,6 +143,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendButton" />
+        app:layout_constraintTop_toBottomOf="@+id/continueButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
