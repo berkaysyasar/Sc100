@@ -26,13 +26,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/appinfoTextView"
         android:layout_width="351dp"
         android:layout_height="209dp"
         android:layout_marginTop="32dp"
-        android:text="Welcome to SelfControl, where every tap is a step towards your goals. In this digital realm, you are the architect of your focus. Embrace the challenge, for within discipline lies your path to success. Let each moment of restraint be a reminder of your unwavering commitment to personal growth. Welcome to a life shaped by your choices – welcome to SelfControl!"
-        android:textColor="#D2DBC8"
+        android:text="x"
         android:textAlignment="center"
+        android:textColor="#D2DBC8"
         android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/appinfoTextView" />
 
     <TextView
         android:id="@+id/textView6"

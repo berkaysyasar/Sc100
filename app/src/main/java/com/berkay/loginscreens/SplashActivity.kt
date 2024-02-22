@@ -14,18 +14,21 @@ class SplashActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        binding.ivSplash.alpha = 0f
-        binding.loading.alpha = 0f
-        binding.textView6.alpha = 0f
-        binding.ivSplash.animate().setDuration(1500).alpha(1f).withEndAction(Runnable {
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        })
-        binding.loading.animate().setDuration(1500).alpha(1f).withEndAction(Runnable {
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        })
-        binding.textView6.animate().setDuration(1500).alpha(1f).withEndAction(Runnable {
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        })
+        with(binding) {
+            listOf(ivSplash, loading, loadingsplash).forEach { it.alpha = 0f }
+
+            ivSplash.animate().setDuration(1000).alpha(1f).withEndAction {
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
+
+            loading.animate().setDuration(1000).alpha(1f).withEndAction {
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
+
+            loadingsplash.animate().setDuration(1000).alpha(1f).withEndAction {
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
+        }
 
 
         val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
@@ -39,11 +42,13 @@ class SplashActivity : AppCompatActivity() {
                     apply()
                 }
                 startActivity(i)
+                finish()
             } else {
                 val i = Intent(this, MainActivity::class.java)
                 startActivity(i)
+                finish()
             }
-        }, 2000)
+        }, 1500)
 
 
     }

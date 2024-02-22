@@ -29,7 +29,7 @@
         android:src="@drawable/img_1" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/loadingsplash"
         android:layout_width="278dp"
         android:layout_height="53dp"
         android:layout_below="@+id/iv_splash"

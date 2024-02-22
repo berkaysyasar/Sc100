@@ -91,21 +91,52 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun girisyapButtonClicked(view : View){
+    fun girisyapButtonClicked(view: View) {
         val email = binding.emailText.text.toString()
         val password = binding.passwordText.text.toString()
-        if(email.equals("") || password.equals("")){
-            Toast.makeText(this,"Enter email and password!",Toast.LENGTH_LONG).show()
-        }else{
-            auth.signInWithEmailAndPassword(email,password).addOnSuccessListener {
-                val intent = Intent(this@MainActivity,menu::class.java)
-                startActivity(intent)
-                finish()
-            }.addOnFailureListener{
-                Toast.makeText(this@MainActivity,it.localizedMessage,Toast.LENGTH_LONG).show()
-            }
-        }
+        val rememberMeCheckbox = binding.loggedinCheckBox
 
+        if (email.isBlank() || password.isBlank()) {
+            Toast.makeText(this, "Enter email and password!", Toast.LENGTH_LONG).show()
+        } else {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener {
+                    if (rememberMeCheckbox.isChecked) {
+                        // Save login credentials (email and password) using SharedPreferences
+                        saveLoginCredentials(email, password)
+                    } else {
+                        // Clear saved credentials if "Remember Me" is not checked
+                        clearLoginCredentials()
+                    }
+
+                    val intent = Intent(this@MainActivity, menu::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this@MainActivity, it.localizedMessage, Toast.LENGTH_LONG).show()
+                }
+        }
+    }
+
+    private fun saveLoginCredentials(email: String, password: String) {
+        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putBoolean("rememberMe", true)
+            putString("email", email)
+            putString("password", password)
+            apply()
+        }
+    }
+
+    private fun clearLoginCredentials() {
+        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putBoolean("rememberMe", false)
+            remove("email")
+            remove("password")
+            apply()
+        }
     }
 
     fun kayitolButtonClicked(view: View) {

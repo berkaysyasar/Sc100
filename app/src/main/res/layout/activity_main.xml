@@ -145,4 +145,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/continueButton" />
 
+    <CheckBox
+        android:id="@+id/loggedinCheckBox"
+        android:layout_width="120dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="34dp"
+        android:text="Remember Me"
+        android:textSize="12dp"
+        android:textColor="#D2DBC8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
