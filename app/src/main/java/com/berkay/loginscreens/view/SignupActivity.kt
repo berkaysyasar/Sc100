@@ -1,4 +1,4 @@
-package com.berkay.loginscreens
+package com.berkay.loginscreens.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +35,7 @@ class SignupActivity : AppCompatActivity() {
             Toast.makeText(this,"Password not matching!", Toast.LENGTH_LONG).show()
         }else{
             auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener {
-                val intent = Intent(this@SignupActivity,menu::class.java)
+                val intent = Intent(this@SignupActivity, MenuActivity::class.java)
                 startActivity(intent)
                 finish()
             }.addOnFailureListener{

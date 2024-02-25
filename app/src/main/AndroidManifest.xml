@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,22 +16,25 @@
         android:theme="@style/Theme.LoginScreens"
         tools:targetApi="31">
         <activity
-            android:name=".WelcomePageActivity"
+            android:name=".view.MainMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.WelcomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".view.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".view.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".menu"
+            android:name=".view.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".view.MenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#659092"
     android:onClick="signupClicked"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <EditText
         android:id="@+id/emailText"

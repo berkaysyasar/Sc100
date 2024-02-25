@@ -1,4 +1,4 @@
-package com.berkay.loginscreens
+package com.berkay.loginscreens.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

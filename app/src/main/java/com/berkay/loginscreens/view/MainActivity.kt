@@ -1,23 +1,18 @@
-package com.berkay.loginscreens
+package com.berkay.loginscreens.view
 
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import com.berkay.loginscreens.R
 import com.berkay.loginscreens.databinding.ActivityMainBinding
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.internal.OnConnectionFailedListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -81,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken,null)
         auth.signInWithCredential(credential).addOnCompleteListener{
             if(it.isSuccessful){
-                val intent : Intent = Intent(this,menu::class.java)
+                val intent : Intent = Intent(this, MenuActivity::class.java)
                 intent.putExtra("email",account.email)
                 startActivity(intent)
             }else{
@@ -109,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                         clearLoginCredentials()
                     }
 
-                    val intent = Intent(this@MainActivity, menu::class.java)
+                    val intent = Intent(this@MainActivity, MenuActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -151,6 +146,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    }
+}
 
 

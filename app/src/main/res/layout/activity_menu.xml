@@ -1,28 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".menu">
+    android:background="#659092"
+    >
 
-    <Button
-        android:id="@+id/signoutButton"
-        android:layout_width="178dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="24dp"
-        android:onClick="signoutButtonClicked"
-        android:text="Sign Out"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menutextview" />
-
-    <TextView
-        android:id="@+id/menutextview"
+    <Switch
+        android:id="@+id/notswitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        android:text="TextView"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/sporswitch"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/notTextView"
+        app:layout_constraintTop_toTopOf="@+id/notTextView" />
+
+    <Switch
+        android:id="@+id/sporswitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/yemekswitch"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/sporTextview"
+        app:layout_constraintTop_toTopOf="@+id/sporTextview" />
+
+    <Switch
+        android:id="@+id/yemekswitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:textSize="20dp"
+        app:layout_constraintStart_toEndOf="@+id/yemekTextview"
+        app:layout_constraintTop_toTopOf="@+id/yemekTextview" />
+
+    <TextView
+        android:id="@+id/notTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="160dp"
+        android:text="Not"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sporTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Spor"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/notTextView"
+        app:layout_constraintTop_toBottomOf="@+id/notTextView" />
+
+    <TextView
+        android:id="@+id/yemekTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Yemek"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/sporTextview"
+        app:layout_constraintTop_toBottomOf="@+id/sporTextview" />
+
+    <Button
+        android:id="@+id/devametbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#425E60"
+        android:text="Devam Et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yemekTextview" />
+
+    <TextView
+        android:id="@+id/mesajTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="Takip Etmek İstediğiniz Şeyleri Seçiniz"
+        android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
