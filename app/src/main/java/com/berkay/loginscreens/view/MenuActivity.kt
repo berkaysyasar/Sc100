@@ -44,7 +44,7 @@ class MenuActivity : AppCompatActivity() {
         binding.devametbutton.setOnClickListener {
 
                 startNextActivityWithSelectedCategories()
-            
+
         }
     }
 

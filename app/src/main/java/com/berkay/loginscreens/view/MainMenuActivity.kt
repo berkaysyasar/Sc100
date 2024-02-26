@@ -1,31 +1,30 @@
 package com.berkay.loginscreens.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.TextView
-import com.berkay.loginscreens.R
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.berkay.loginscreens.adapter.SelectedCategoriesAdapter
 import com.berkay.loginscreens.databinding.ActivityMainMenuBinding
 
 class MainMenuActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityMainMenuBinding
+    private lateinit var binding: ActivityMainMenuBinding
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var selectedCategoriesAdapter: SelectedCategoriesAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainMenuBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
+        recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
         val selectedCategories = intent.getStringArrayListExtra("selectedCategories")
-        val linearLayout = findViewById<LinearLayout>(R.id.linearLayout)
-
-
-
-        selectedCategories!!.forEach {
-            category ->
-            val textView = TextView(this)
-            textView.text = category
-            linearLayout.addView(textView)
-
-        }
+        selectedCategoriesAdapter = SelectedCategoriesAdapter(selectedCategories)
+        recyclerView.adapter = selectedCategoriesAdapter
     }
+
+    // Diğer kodlar...
 }
