@@ -14,6 +14,7 @@ class SplashActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+
         with(binding) {
             listOf(ivSplash, loading, loadingsplash).forEach { it.alpha = 0f }
 
@@ -44,9 +45,18 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(i)
                 finish()
             } else {
-                val i = Intent(this, MainActivity::class.java)
-                startActivity(i)
-                finish()
+                val sharedprf = getSharedPreferences("shareprf", MODE_PRIVATE)
+                val rememberMeChecked = sharedprf.getBoolean("RememberMe",false)
+
+                if(rememberMeChecked){
+                    val i = Intent(this, MenuActivity::class.java)
+                    startActivity(i)
+                    finish()
+                }else {
+                    val i = Intent(this, MainActivity::class.java)
+                    startActivity(i)
+                    finish()
+                }
             }
         }, 1500)
 

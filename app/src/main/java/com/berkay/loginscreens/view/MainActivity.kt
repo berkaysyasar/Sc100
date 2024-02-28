@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
 
         sharedpreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+        val sharedprf = getSharedPreferences("shareprf", MODE_PRIVATE)
 
         if (!(binding.remembermeCheckBox.isChecked) && sharedpreferences.contains("EMAIL") && sharedpreferences.contains("PASSWORD")) {
             autoLogin()
@@ -55,6 +56,11 @@ class MainActivity : AppCompatActivity() {
 
             if(binding.remembermeCheckBox.isChecked){
                 saveCredentials(email, password)
+                val editor = sharedprf.edit()
+                editor.putBoolean("RememberMe",true)
+                editor.apply()
+                val intent= Intent(this,SplashActivity::class.java)
+                startActivity(intent)
             }
 
             if(binding.remembermeCheckBox.isChecked){
@@ -82,7 +88,6 @@ class MainActivity : AppCompatActivity() {
         editor.putString("EMAIL",email)
         editor.putString("PASSWORD",password)
         editor.apply()
-
     }
 
     private fun autoLogin() {
@@ -110,7 +115,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
-    
 
     private fun signInGoogle(){
         val signInIntent = googleSignInClient.signInIntent
@@ -149,8 +153,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     fun kayitolButtonClicked(view: View) {
         val intent = Intent(this@MainActivity, SignupActivity::class.java)
