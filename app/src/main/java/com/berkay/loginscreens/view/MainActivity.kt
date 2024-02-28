@@ -1,9 +1,12 @@
 package com.berkay.loginscreens.view
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 
@@ -23,6 +27,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient : GoogleSignInClient
+    private lateinit var sharedpreferences : SharedPreferences
+    private var email: String? = null
+    private var password: String? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +40,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         //Initialize Firebase Auth
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
 
-        val currentUser = auth.currentUser
+
+        sharedpreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+
+        if (!(binding.remembermeCheckBox.isChecked) && sharedpreferences.contains("EMAIL") && sharedpreferences.contains("PASSWORD")) {
+            autoLogin()
+        }
+
+        binding.loginButton.setOnClickListener {
+            val email = binding.emailText.text.toString()
+            val password = binding.passwordText.text.toString()
+
+            if(binding.remembermeCheckBox.isChecked){
+                saveCredentials(email, password)
+            }
+
+            if(binding.remembermeCheckBox.isChecked){
+                autoLogin()
+            }else{
+                performLogin(email,password)
+            }
+        }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -47,6 +76,41 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun saveCredentials(email: String, password: String) {
+        val editor = sharedpreferences.edit()
+        editor.putString("EMAIL",email)
+        editor.putString("PASSWORD",password)
+        editor.apply()
+
+    }
+
+    private fun autoLogin() {
+        val savedEmail = sharedpreferences.getString("EMAIL","")
+        val savedpassword = sharedpreferences.getString("PASSWORD","")
+
+        if(!savedEmail.isNullOrEmpty() && !savedpassword.isNullOrEmpty()){
+            performLogin(savedEmail,savedpassword)
+        }
+    }
+
+    private fun performLogin(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Giriş başarılıysa
+                    val user: FirebaseUser? = auth.currentUser
+                    Toast.makeText(this, "Oturum açıldı: ${user?.email}", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MenuActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    // Giriş başarısızsa
+                    Toast.makeText(this, "Oturum açma hatası", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+    
 
     private fun signInGoogle(){
         val signInIntent = googleSignInClient.signInIntent
@@ -74,10 +138,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken,null)
+        val user: FirebaseUser? = auth.currentUser
         auth.signInWithCredential(credential).addOnCompleteListener{
             if(it.isSuccessful){
+                Toast.makeText(this, "Oturum açıldı: ${user?.email}", Toast.LENGTH_SHORT).show()
                 val intent : Intent = Intent(this, MenuActivity::class.java)
-                intent.putExtra("email",account.email)
                 startActivity(intent)
             }else{
                 Toast.makeText(this,it.exception.toString(),Toast.LENGTH_LONG).show()
@@ -86,53 +151,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun girisyapButtonClicked(view: View) {
-        val email = binding.emailText.text.toString()
-        val password = binding.passwordText.text.toString()
-        val rememberMeCheckbox = binding.loggedinCheckBox
-
-        if (email.isBlank() || password.isBlank()) {
-            Toast.makeText(this, "Enter email and password!", Toast.LENGTH_LONG).show()
-        } else {
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    if (rememberMeCheckbox.isChecked) {
-                        // Save login credentials (email and password) using SharedPreferences
-                        saveLoginCredentials(email, password)
-                    } else {
-                        // Clear saved credentials if "Remember Me" is not checked
-                        clearLoginCredentials()
-                    }
-
-                    val intent = Intent(this@MainActivity, MenuActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this@MainActivity, it.localizedMessage, Toast.LENGTH_LONG).show()
-                }
-        }
-    }
-
-    private fun saveLoginCredentials(email: String, password: String) {
-        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            putBoolean("rememberMe", true)
-            putString("email", email)
-            putString("password", password)
-            apply()
-        }
-    }
-
-    private fun clearLoginCredentials() {
-        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            putBoolean("rememberMe", false)
-            remove("email")
-            remove("password")
-            apply()
-        }
-    }
 
     fun kayitolButtonClicked(view: View) {
         val intent = Intent(this@MainActivity, SignupActivity::class.java)
