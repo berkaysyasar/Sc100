@@ -22,15 +22,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient : GoogleSignInClient
     private lateinit var sharedpreferences : SharedPreferences
-    private var email: String? = null
-    private var password: String? = null
-
+    private lateinit var firebaseRef : DatabaseReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         //Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+        firebaseRef =  FirebaseDatabase.getInstance().getReference("Test")
 
 
         sharedpreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)

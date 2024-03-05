@@ -8,69 +8,6 @@
     android:background="#659092"
     >
 
-    <Switch
-        android:id="@+id/notswitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/sporswitch"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/notTextView"
-        app:layout_constraintTop_toTopOf="@+id/notTextView" />
-
-    <Switch
-        android:id="@+id/sporswitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/yemekswitch"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/sporTextview"
-        app:layout_constraintTop_toTopOf="@+id/sporTextview" />
-
-    <Switch
-        android:id="@+id/yemekswitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:textSize="20dp"
-        app:layout_constraintStart_toEndOf="@+id/yemekTextview"
-        app:layout_constraintTop_toTopOf="@+id/yemekTextview" />
-
-    <TextView
-        android:id="@+id/notTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="32dp"
-        android:text="Not"
-        android:textColor="#D2DBC8"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mesajTextview" />
-
-    <TextView
-        android:id="@+id/sporTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Spor"
-        android:textColor="#D2DBC8"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="@+id/notTextView"
-        app:layout_constraintTop_toBottomOf="@+id/notTextView" />
-
-    <TextView
-        android:id="@+id/yemekTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Yemek"
-        android:textSize="20dp"
-        android:textColor="#D2DBC8"
-        app:layout_constraintStart_toStartOf="@+id/sporTextview"
-        app:layout_constraintTop_toBottomOf="@+id/sporTextview" />
-
     <Button
         android:id="@+id/devametbutton"
         android:layout_width="wrap_content"
@@ -80,19 +17,60 @@
         android:text="Devam Et"
         android:textColor="#D2DBC8"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yemekTextview" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
 
     <TextView
         android:id="@+id/mesajTextview"
         android:layout_width="375dp"
         android:layout_height="68dp"
-        android:layout_marginTop="70dp"
-        android:text="Takip Etmek İstediğiniz Başlıkları Seçiniz"
+        android:layout_marginTop="44dp"
+        android:text="Takip Etmek İstediğiniz Kategorileri Seçiniz"
         android:textAlignment="center"
         android:textColor="#D2DBC8"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView2"
+        android:layout_width="408dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noteswitch" />
+
+    <TextView
+        android:id="@+id/nottextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="32dp"
+        android:text="Not"
+        android:textColor="#D2DBC8"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mesajTextview" />
+
+    <Switch
+        android:id="@+id/noteswitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="63dp"
+        app:layout_constraintStart_toEndOf="@+id/nottextView"
+        app:layout_constraintTop_toTopOf="@+id/nottextView" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="65dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#425E60"
+        android:text="+"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

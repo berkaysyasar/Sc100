@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.berkay.loginscreens.R
+import com.berkay.loginscreens.interfaces.CategoryClickListener
 
-class SelectedCategoriesAdapter(private val selectedCategories: List<String>?) :
-    RecyclerView.Adapter<SelectedCategoriesAdapter.ViewHolder>() {
+class SelectedCategoriesAdapter(
+    private val selectedCategories: List<String>?,
+    private var categoryClickListener: CategoryClickListener
+) : RecyclerView.Adapter<SelectedCategoriesAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val buttonItem: Button = itemView.findViewById(R.id.buttonItem)
@@ -26,11 +29,16 @@ class SelectedCategoriesAdapter(private val selectedCategories: List<String>?) :
 
         // Seçilen öğelerin üzerine tıklandığında bir şey yapmak istiyorsanız buraya ekleyebilirsiniz
         holder.itemView.setOnClickListener {
-            // Örneğin: Toast.makeText(holder.itemView.context, "Tıklandı: $category", Toast.LENGTH_SHORT).show()
+            category?.let { categoryClickListener.onCategoryClicked(it) }
         }
     }
 
     override fun getItemCount(): Int {
         return selectedCategories?.size ?: 0
+    }
+
+    // Daha önce eksik olan bu metodu ekleyin
+    fun setOnCategoryClickListener(listener: CategoryClickListener) {
+        this.categoryClickListener = listener
     }
 }
