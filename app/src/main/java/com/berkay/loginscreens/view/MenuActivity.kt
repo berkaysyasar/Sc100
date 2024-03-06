@@ -4,12 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.berkay.loginscreens.R
 import com.berkay.loginscreens.adapter.CreateCategorieAdapter
+import com.berkay.loginscreens.database.dbhelper
 import com.berkay.loginscreens.databinding.ActivityMenuBinding
 
 class MenuActivity : AppCompatActivity() {
@@ -17,12 +21,17 @@ class MenuActivity : AppCompatActivity() {
     private val selectedCategories = mutableListOf<String>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var createCategorieAdapter: CreateCategorieAdapter
+    private val displayedCategories = mutableListOf<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        val context = this
+        var db = dbhelper(context)
 
 
         // Sadece "Not" switch'ini kullanacağız
@@ -50,6 +59,39 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun showAddCategoryDialog() {
+        /*
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Kategori Ekle")
+
+        val dialogView = layoutInflater.inflate(R.layout.switchcheckformenu_layout, null)
+        val edittextcategory = dialogView.findViewById<EditText>(R.id.categoryname)
+
+        builder.setView(dialogView)
+
+        builder.setPositiveButton("Ekle") { _, _ ->
+            val categoryName = edittextcategory.text.toString()
+
+            if (categoryName.length in 2..10) {
+                val formattedCategoryName = categoryName.capitalize()
+
+                if (!displayedCategories.contains(formattedCategoryName)) {
+                    displayedCategories.add(formattedCategoryName)
+                    createCategorieAdapter.notifyDataSetChanged()
+
+                } else {
+                    Toast.makeText(this, "Bu kategori zaten ekli.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Kategori adı 2 ile 10 karakter arasında olmalıdır.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        builder.setNegativeButton("İptal") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()*/
+
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Kategori Ekle")
 
@@ -61,9 +103,8 @@ class MenuActivity : AppCompatActivity() {
         input.layoutParams = lp
         builder.setView(input)
 
-        builder.setPositiveButton("Ekle"){
-                _, _ ->
-                val categoryName = input.text.toString()
+        builder.setPositiveButton("Ekle") { _, _ ->
+            val categoryName = input.text.toString()
             if (categoryName.length in 2..10) {
                 val formattedCategoryName = categoryName.capitalize()
 
@@ -75,11 +116,14 @@ class MenuActivity : AppCompatActivity() {
                     Toast.makeText(this, "Bu kategori zaten ekli.", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Kategori adı 2 ile 10 karakter arasında olmalıdır.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Kategori adı 2 ile 10 karakter arasında olmalıdır.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
-        builder.setNegativeButton("İptal"){
-                dialog, _ ->
+        builder.setNegativeButton("İptal") { dialog, _ ->
             dialog.cancel()
         }
         builder.show()
@@ -87,9 +131,17 @@ class MenuActivity : AppCompatActivity() {
 
     private fun startNextActivityWithSelectedCategories() {
 
-        // "Not" switch her zaman aktif olduğu için kontrol etmeye gerek yok, doğrudan ekleyebiliriz
+        val selectedCategoriesWithSwitch = mutableListOf<String>()
+        selectedCategoriesWithSwitch.addAll(selectedCategories)
+
+
+
         val intent = Intent(this, MainMenuActivity::class.java)
-        intent.putExtra("selectedCategories", ArrayList(selectedCategories))
+        intent.putStringArrayListExtra("selectedCategoriesWithSwitch", ArrayList(selectedCategoriesWithSwitch))
         startActivity(intent)
     }
+
+
+
 }
+

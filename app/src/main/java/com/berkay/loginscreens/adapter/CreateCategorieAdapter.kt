@@ -11,6 +11,8 @@ import com.berkay.loginscreens.R
 class CreateCategorieAdapter(private val categories: MutableList<String>) :
     RecyclerView.Adapter<CreateCategorieAdapter.ViewHolder>() {
 
+    private val isCheckedList = MutableList(categories.size) { false }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val categoryName: TextView = itemView.findViewById(R.id.category)
         val switch: Switch = itemView.findViewById(R.id.switch1)
@@ -32,5 +34,9 @@ class CreateCategorieAdapter(private val categories: MutableList<String>) :
 
     override fun getItemCount(): Int {
         return categories.size
+    }
+
+    fun getCheckedStatus(position: Int): Boolean {
+        return isCheckedList.getOrNull(position) ?: false
     }
 }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.berkay.loginscreens.R
 import com.berkay.loginscreens.interfaces.CategoryClickListener
@@ -25,6 +26,7 @@ class SelectedCategoriesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = selectedCategories?.get(position)
+
         holder.buttonItem.text = category
 
         // Seçilen öğelerin üzerine tıklandığında bir şey yapmak istiyorsanız buraya ekleyebilirsiniz

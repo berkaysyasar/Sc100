@@ -1,0 +1,45 @@
+package com.berkay.loginscreens.database
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
+import com.berkay.loginscreens.classes.CategoryMaker
+
+val database_name = "Veritabanim"
+val table_name = "Kategoriler"
+val col_name = "kategoriname"
+val col_switch = "kategoriswitch"
+val col_id = "id"
+
+class dbhelper (var context: Context): SQLiteOpenHelper(context, database_name,null,1) {
+    override fun onCreate(db: SQLiteDatabase?) {
+        // Veritabanı oluştuğunda bir kez çalışır.
+        var createTable = " CREATE TABLE "+ table_name+ "("+
+                col_id + "INTEGER PRIMARY KEY AUTOINCREMENT," +
+                col_name + "VARCHAR(256)," +
+                col_switch + " BOOLEAN)"
+        db?.execSQL(createTable)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        // Veritabanı yükseltmek için kullanılır.
+    }
+
+    // Veri kaydetmek için fonksiyon tanımlama.
+
+    fun insertData(categoryMaker: CategoryMaker){
+        val db = this.writableDatabase
+        val cv = ContentValues()
+        cv.put(col_name,categoryMaker.categoryname)
+        cv.put(col_switch,categoryMaker.switch)
+        var sonuc = db.insert(table_name,null,cv)
+        if(sonuc == (-1).toLong()){
+            Toast.makeText(context,"Hatalı",Toast.LENGTH_LONG).show()
+        }else{
+            Toast.makeText(context,"Başarılı",Toast.LENGTH_LONG).show()
+
+        }
+    }
+}
