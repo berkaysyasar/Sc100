@@ -23,16 +23,13 @@ class MainMenuActivity : AppCompatActivity(), CategoryClickListener {
         val view = binding.root
         setContentView(view)
 
-
-
-        val notbutton = binding.notbutton
-        notbutton.text = "Not"
+        val notButton = binding.notbutton
+        notButton.text = "Not"
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Menü aktivitesinden gelen seçilen kategorileri al
         selectedCategories = intent.getStringArrayListExtra("selectedCategoriesWithSwitch") ?: mutableListOf()
-
 
         // Seçilen kategorileri RecyclerView ile göster
         selectedCategoriesAdapter = SelectedCategoriesAdapter(selectedCategories, this)
@@ -54,6 +51,3 @@ class MainMenuActivity : AppCompatActivity(), CategoryClickListener {
         }
     }
 }
-
-
-
