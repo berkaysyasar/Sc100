@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.berkay.loginscreens.adapter.CreateCategoryAdapter
+import com.berkay.loginscreens.classes.CategoryMaker
 import com.berkay.loginscreens.database.dbhelper
 import com.berkay.loginscreens.databinding.ActivityMenuBinding
 
@@ -18,6 +19,7 @@ class MenuActivity : AppCompatActivity() {
     private val selectedCategories = mutableListOf<CategorySwitchItem>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var createCategorieAdapter: CreateCategoryAdapter
+    private lateinit var db: dbhelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +27,8 @@ class MenuActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val context = this
-        var db = dbhelper(context)
+        db = dbhelper(this)
+
 
         // Sadece "Not" switch'ini kullanacağız
         val switch1 = binding.noteswitch
@@ -50,6 +52,22 @@ class MenuActivity : AppCompatActivity() {
         createCategorieAdapter = CreateCategoryAdapter(selectedCategories)
         recyclerView.adapter = createCategorieAdapter
     }
+    override fun onResume() {
+        super.onResume()
+        if (::db.isInitialized) {
+            refreshCategoryList()
+        }
+    }
+
+    private fun refreshCategoryList() {
+        // readData fonksiyonunu kullanarak verileri çek
+        val data = db.readData()
+        selectedCategories.clear() // Önceki verileri temizle
+        selectedCategories.addAll(data.map { CategorySwitchItem(it.categoryname, it.switch) })
+
+        // Adapter'a veri değişikliğini bildir
+        createCategorieAdapter.notifyDataSetChanged()
+    }
 
     private fun showAddCategoryDialog() {
         val builder = AlertDialog.Builder(this)
@@ -70,7 +88,17 @@ class MenuActivity : AppCompatActivity() {
 
                 if (!selectedCategories.any { it.category == formattedCategoryName }) {
                     // Yeni kategori eklenirse, switch durumunu varsayılan olarak false yap
-                    selectedCategories.add(CategorySwitchItem(formattedCategoryName, false))
+                    var newCategory = CategoryMaker(categoryname = formattedCategoryName, switch = false)
+                    db.insertData(newCategory)
+
+                    // readData fonksiyonunu kullanarak verileri çek
+                    val data = db.readData()
+                    selectedCategories.clear() // Önceki verileri temizle
+                    selectedCategories.addAll(data.map { CategorySwitchItem(it.categoryname, it.switch) })
+
+                    // createCategorieAdapter.notifyDataSetChanged() kaldırıldı
+
+                    // Adapter'a veri değişikliğini bildir
                     createCategorieAdapter.notifyDataSetChanged()
                 } else {
                     Toast.makeText(this, "Bu kategori zaten ekli.", Toast.LENGTH_SHORT).show()
@@ -89,6 +117,7 @@ class MenuActivity : AppCompatActivity() {
         builder.show()
     }
 
+
     private fun startNextActivityWithSelectedCategories() {
         val selectedCategoriesWithSwitch = selectedCategories.filter { it.isChecked }.map { it.category }
         val intent = Intent(this, MainMenuActivity::class.java)
@@ -98,3 +127,4 @@ class MenuActivity : AppCompatActivity() {
 
     data class CategorySwitchItem(val category: String, var isChecked: Boolean)
 }
+

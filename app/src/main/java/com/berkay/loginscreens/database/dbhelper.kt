@@ -16,9 +16,9 @@ val col_id = "id"
 class dbhelper (var context: Context): SQLiteOpenHelper(context, database_name,null,1) {
     override fun onCreate(db: SQLiteDatabase?) {
         // Veritabanı oluştuğunda bir kez çalışır.
-        var createTable = " CREATE TABLE "+ table_name+ "("+
-                col_id + "INTEGER PRIMARY KEY AUTOINCREMENT," +
-                col_name + "VARCHAR(256)," +
+        var createTable = " CREATE TABLE " + table_name + "(" +
+                col_id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                col_name + " VARCHAR(256)," +
                 col_switch + " BOOLEAN)"
         db?.execSQL(createTable)
     }
@@ -29,17 +29,52 @@ class dbhelper (var context: Context): SQLiteOpenHelper(context, database_name,n
 
     // Veri kaydetmek için fonksiyon tanımlama.
 
-    fun insertData(categoryMaker: CategoryMaker){
+    fun insertData(categoryMaker: CategoryMaker) {
         val db = this.writableDatabase
         val cv = ContentValues()
-        cv.put(col_name,categoryMaker.categoryname)
-        cv.put(col_switch,categoryMaker.switch)
-        var sonuc = db.insert(table_name,null,cv)
-        if(sonuc == (-1).toLong()){
-            Toast.makeText(context,"Hatalı",Toast.LENGTH_LONG).show()
-        }else{
-            Toast.makeText(context,"Başarılı",Toast.LENGTH_LONG).show()
-
+        cv.put(col_name, categoryMaker.categoryname)
+        cv.put(col_switch, categoryMaker.switch)
+        var sonuc = db.insert(table_name, null, cv)
+        if (sonuc == (-1).toLong()) {
+            Toast.makeText(context, "Hatalı", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(context, "Başarılı", Toast.LENGTH_LONG).show()
         }
+        db.close()
     }
+
+    // Verileri okumak için fonksiyon tanımlama.
+    fun readData(): MutableList<CategoryMaker> {
+        val list: MutableList<CategoryMaker> = ArrayList()
+        val db = this.readableDatabase
+        val query = "SELECT * FROM " + table_name
+        val result = db.rawQuery(query, null)
+        if(result.moveToFirst()){
+            do {
+                val categoryMaker = CategoryMaker()
+                // Sütun var mı kontrolü ekleyin
+                val idColumnIndex = result.getColumnIndex(col_id)
+                val nameColumnIndex = result.getColumnIndex(col_name)
+                val switchColumnIndex = result.getColumnIndex(col_switch)
+
+                if (idColumnIndex >= 0) {
+                    categoryMaker.id = result.getString(idColumnIndex).toInt()
+                }
+
+                if (nameColumnIndex >= 0) {
+                    categoryMaker.categoryname = result.getString(nameColumnIndex)
+                }
+
+                if (switchColumnIndex >= 0) {
+                    categoryMaker.switch = result.getString(switchColumnIndex).toBoolean()
+                }
+
+                list.add(categoryMaker)
+            }while (result.moveToNext())
+        }
+        result.close()
+        db.close()
+        return list
+    }
+
 }
