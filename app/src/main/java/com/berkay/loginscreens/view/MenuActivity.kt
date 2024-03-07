@@ -99,11 +99,41 @@ class MenuActivity : AppCompatActivity() {
         builder.show()
     }
 
+    override fun onPause() {
+        super.onPause()
+        // onPause'de seçilen kategorilerin durumunu bir yerde sakla
+        saveSelectedCategoriesState()
+    }
+
     override fun onResume() {
         super.onResume()
         if (::db.isInitialized) {
             refreshCategoryList()
+            // onResume'de seçilen kategorilerin durumunu geri yükle
+            restoreSelectedCategoriesState()
         }
+    }
+    private fun saveSelectedCategoriesState() {
+        // SharedPreferences veya başka bir veritabanı yöntemiyle seçilen kategorilerin durumunu kaydet
+        val prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+        val editor = prefs.edit()
+
+        selectedCategories.forEach {
+            editor.putBoolean(it.category, it.isChecked)
+        }
+
+        editor.apply()
+    }
+    private fun restoreSelectedCategoriesState() {
+        // SharedPreferences veya başka bir veritabanı yöntemiyle seçilen kategorilerin durumunu geri yükle
+        val prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+
+        selectedCategories.forEach {
+            it.isChecked = prefs.getBoolean(it.category, false)
+        }
+
+        // Adapter'a veri değişikliğini bildir
+        createCategorieAdapter.notifyDataSetChanged()
     }
 
     private fun refreshCategoryList() {
