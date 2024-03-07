@@ -77,4 +77,17 @@ class dbhelper (var context: Context): SQLiteOpenHelper(context, database_name,n
         return list
     }
 
+    fun deleteData(categoryId: String): Boolean {
+        val db = this.writableDatabase
+        val whereClause = "$col_name = ?"
+        val whereArgs = arrayOf(categoryId.toString())
+
+        val result = db.delete(table_name, whereClause, whereArgs)
+
+        db.close()
+
+        // Eğer silme işlemi başarılıysa, result sıfırdan büyük olacaktır.
+        return result > 0
+    }
+
 }

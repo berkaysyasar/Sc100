@@ -33,10 +33,16 @@ class MenuActivity : AppCompatActivity() {
         // Sadece "Not" switch'ini kullanacağız
         val switch1 = binding.noteswitch
         val addButton = binding.addButton
+        val deleteButton = binding.deletebutton
 
         addButton.setOnClickListener {
             showAddCategoryDialog()
         }
+
+        deleteButton.setOnClickListener {
+            showDeleteCategoryDialog()
+        }
+
 
         // "Not" switch'ini her zaman enable ve değiştirilemez yap
         switch1.isChecked = true
@@ -52,6 +58,47 @@ class MenuActivity : AppCompatActivity() {
         createCategorieAdapter = CreateCategoryAdapter(selectedCategories)
         recyclerView.adapter = createCategorieAdapter
     }
+
+    private fun showDeleteCategoryDialog() {
+        val categoryList = selectedCategories.map { it.category }.toTypedArray()
+
+        val builder = AlertDialog.Builder(this@MenuActivity)
+        builder.setTitle("Kategori Sil")
+
+        builder.setItems(categoryList) { _, which ->
+            val selectedCategory = categoryList[which]
+            showDeleteConfirmationDialog(selectedCategory)
+        }
+
+        builder.setNegativeButton("İptal") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
+
+    private fun showDeleteConfirmationDialog(categoryName: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Silme Onayı")
+        builder.setMessage("'$categoryName' kategorisini silmek istediğinizden emin misiniz?")
+
+        builder.setPositiveButton("Sil") { _, _ ->
+            val isDeleted = db.deleteData(categoryName)
+            if (isDeleted) {
+                Toast.makeText(this, "$categoryName kategorisi başarıyla silindi.", Toast.LENGTH_SHORT).show()
+                refreshCategoryList()
+            } else {
+                Toast.makeText(this, "Kategori silinirken bir hata oluştu.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        builder.setNegativeButton("İptal") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
+
     override fun onResume() {
         super.onResume()
         if (::db.isInitialized) {
