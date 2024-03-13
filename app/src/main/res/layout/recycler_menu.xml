@@ -22,7 +22,7 @@
             android:layout_marginStart="115dp"/>
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/categoryswitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Switch"

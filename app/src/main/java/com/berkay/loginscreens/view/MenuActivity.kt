@@ -86,6 +86,7 @@ class MenuActivity : AppCompatActivity() {
             val isDeleted = db.deleteData(categoryName)
             if (isDeleted) {
                 Toast.makeText(this, "$categoryName kategorisi başarıyla silindi.", Toast.LENGTH_SHORT).show()
+                // Kategori listesini güncelle
                 refreshCategoryList()
             } else {
                 Toast.makeText(this, "Kategori silinirken bir hata oluştu.", Toast.LENGTH_SHORT).show()
@@ -99,20 +100,25 @@ class MenuActivity : AppCompatActivity() {
         builder.show()
     }
 
+
+
     override fun onPause() {
         super.onPause()
-        // onPause'de seçilen kategorilerin durumunu bir yerde sakla
+        // onPause'de sadece seçilen kategorilerin durumunu bir yerde sakla
         saveSelectedCategoriesState()
     }
 
     override fun onResume() {
         super.onResume()
         if (::db.isInitialized) {
+            // onResume'de kategorilerin listesini güncelle
             refreshCategoryList()
-            // onResume'de seçilen kategorilerin durumunu geri yükle
+
+            // onResume'de sadece seçilen kategorilerin durumunu geri yükle
             restoreSelectedCategoriesState()
         }
     }
+
     private fun saveSelectedCategoriesState() {
         // SharedPreferences veya başka bir veritabanı yöntemiyle seçilen kategorilerin durumunu kaydet
         val prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE)
@@ -137,14 +143,26 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun refreshCategoryList() {
+        // Seçili kategorilerin durumunu önce saklayın
+        val previousSelectedCategories = selectedCategories.filter { it.isChecked }
+
         // readData fonksiyonunu kullanarak verileri çek
         val data = db.readData()
         selectedCategories.clear() // Önceki verileri temizle
-        selectedCategories.addAll(data.map { CategorySwitchItem(it.categoryname, it.switch) })
+        selectedCategories.addAll(data.map { categoryMaker ->
+            // Mevcut veritabanı kategorileriyle eşleşen önceki seçili kategorilerin durumunu bulun
+            val isChecked = previousSelectedCategories.any { it.category == categoryMaker.categoryname && it.isChecked }
+            CategorySwitchItem(categoryMaker.categoryname, isChecked)
+        })
 
         // Adapter'a veri değişikliğini bildir
         createCategorieAdapter.notifyDataSetChanged()
+
+        // RecyclerView'ı güncelle
+        recyclerView.adapter = createCategorieAdapter
     }
+
+
 
     private fun showAddCategoryDialog() {
         val builder = AlertDialog.Builder(this)
@@ -161,22 +179,20 @@ class MenuActivity : AppCompatActivity() {
         builder.setPositiveButton("Ekle") { _, _ ->
             val categoryName = input.text.toString()
             if (categoryName.length in 2..10) {
-                val formattedCategoryName = categoryName.capitalize()
+                val formattedCategoryName = capitalizeFirstLetter(categoryName)
 
-                if (!selectedCategories.any { it.category == formattedCategoryName }) {
+                if (!selectedCategories.any { it.category.equals(formattedCategoryName, ignoreCase = true) }) {
                     // Yeni kategori eklenirse, switch durumunu varsayılan olarak false yap
-                    var newCategory = CategoryMaker(categoryname = formattedCategoryName, switch = false)
-                    db.insertData(newCategory)
-
-                    // readData fonksiyonunu kullanarak verileri çek
-                    val data = db.readData()
-                    selectedCategories.clear() // Önceki verileri temizle
-                    selectedCategories.addAll(data.map { CategorySwitchItem(it.categoryname, it.switch) })
-
-                    // createCategorieAdapter.notifyDataSetChanged() kaldırıldı
-
-                    // Adapter'a veri değişikliğini bildir
+                    val newCategory = CategorySwitchItem(formattedCategoryName, false)
+                    selectedCategories.add(newCategory)
                     createCategorieAdapter.notifyDataSetChanged()
+
+                    // Yeni kategoriyi veritabanına ekle
+                    val categoryMaker = CategoryMaker(formattedCategoryName, false)
+                    db.insertData(categoryMaker)
+
+                    // Kategori listesini güncelle
+                    refreshCategoryList()
                 } else {
                     Toast.makeText(this, "Bu kategori zaten ekli.", Toast.LENGTH_SHORT).show()
                 }
@@ -193,6 +209,11 @@ class MenuActivity : AppCompatActivity() {
         }
         builder.show()
     }
+
+    private fun capitalizeFirstLetter(input: String): String {
+        return input.substring(0, 1).toUpperCase() + input.substring(1)
+    }
+
 
 
     private fun startNextActivityWithSelectedCategories() {

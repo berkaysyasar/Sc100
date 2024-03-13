@@ -12,9 +12,11 @@ import com.berkay.loginscreens.view.MenuActivity.CategorySwitchItem
 class CreateCategoryAdapter(private val categories: MutableList<CategorySwitchItem>) :
     RecyclerView.Adapter<CreateCategoryAdapter.ViewHolder>() {
 
+
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val categoryName: TextView = itemView.findViewById(R.id.category)
-        val switch: Switch = itemView.findViewById(R.id.switch1)
+        val switch: Switch = itemView.findViewById(R.id.categoryswitch)
 
         init {
             // Switch durumunu değiştirdiğimizde, CategorySwitchItem'ı güncelleyerek kaydediyoruz
