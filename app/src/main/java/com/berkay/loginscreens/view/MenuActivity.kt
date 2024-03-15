@@ -63,14 +63,14 @@ class MenuActivity : AppCompatActivity() {
         val categoryList = selectedCategories.map { it.category }.toTypedArray()
 
         val builder = AlertDialog.Builder(this@MenuActivity)
-        builder.setTitle("Kategori Sil")
+        builder.setTitle("Delete Category")
 
         builder.setItems(categoryList) { _, which ->
             val selectedCategory = categoryList[which]
             showDeleteConfirmationDialog(selectedCategory)
         }
 
-        builder.setNegativeButton("İptal") { dialog, _ ->
+        builder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
 
@@ -79,21 +79,21 @@ class MenuActivity : AppCompatActivity() {
 
     private fun showDeleteConfirmationDialog(categoryName: String) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Silme Onayı")
-        builder.setMessage("'$categoryName' kategorisini silmek istediğinizden emin misiniz?")
+        builder.setTitle("Deletion Confirmation")
+        builder.setMessage("Are you sure you want to delete the $categoryName category?")
 
-        builder.setPositiveButton("Sil") { _, _ ->
+        builder.setPositiveButton("Delete") { _, _ ->
             val isDeleted = db.deleteData(categoryName)
             if (isDeleted) {
-                Toast.makeText(this, "$categoryName kategorisi başarıyla silindi.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "$categoryName deleted.", Toast.LENGTH_SHORT).show()
                 // Kategori listesini güncelle
                 refreshCategoryList()
             } else {
-                Toast.makeText(this, "Kategori silinirken bir hata oluştu.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "An error occurred while deleting a category.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        builder.setNegativeButton("İptal") { dialog, _ ->
+        builder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
 
@@ -166,7 +166,7 @@ class MenuActivity : AppCompatActivity() {
 
     private fun showAddCategoryDialog() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Kategori Ekle")
+        builder.setTitle("Add Category")
 
         val input = EditText(this)
         val lp = LinearLayout.LayoutParams(
@@ -176,7 +176,7 @@ class MenuActivity : AppCompatActivity() {
         input.layoutParams = lp
         builder.setView(input)
 
-        builder.setPositiveButton("Ekle") { _, _ ->
+        builder.setPositiveButton("Add") { _, _ ->
             val categoryName = input.text.toString()
             if (categoryName.length in 2..10) {
                 val formattedCategoryName = capitalizeFirstLetter(categoryName)
@@ -194,17 +194,17 @@ class MenuActivity : AppCompatActivity() {
                     // Kategori listesini güncelle
                     refreshCategoryList()
                 } else {
-                    Toast.makeText(this, "Bu kategori zaten ekli.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "This category is already attached.", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(
                     this,
-                    "Kategori adı 2 ile 10 karakter arasında olmalıdır.",
+                    "The category name must be between 2 and 10 characters.",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
-        builder.setNegativeButton("İptal") { dialog, _ ->
+        builder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.cancel()
         }
         builder.show()

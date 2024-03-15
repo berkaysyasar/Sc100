@@ -65,4 +65,6 @@ dependencies {
     implementation ("androidx.activity:activity-ktx:1.3.1")
     implementation ("androidx.fragment:fragment-ktx:1.3.1")
 
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 }
